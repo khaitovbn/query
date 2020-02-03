@@ -1,0 +1,201 @@
+USE [REPORTS]
+GO
+
+/****** Object:  UserDefinedFunction [dbo].[FN_KG_EXCEL]    Script Date: 03.02.2020 16:46:09 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+
+
+ALTER FUNCTION [dbo].[FN_KG_EXCEL]
+
+	(
+		@param INT
+	,	@RN INT
+	)
+
+--author: haitov_bn
+--date:	2018-11-12
+--description: параметрическая вьюха, которая формирует список ТТ после n(@param)-ограничений
+
+RETURNS TABLE 
+AS
+RETURN
+
+--DECLARE @param INT = 1;
+
+SELECT a.SEASON_FLAG
+	, a.SUBFRMT_FLAG
+	, a.BRANCH_FLAG
+	, a.BUDG_FLAG
+	, a.SALE_FLAG
+	, a.SALE_FLAG_2
+	, a.POPUL_FLAG
+	, a.METR_FLAG
+	, a.METR_FLAG_2
+	, a.TR_FLAG
+	, a.COMP_FLAG
+	, a.ALCO_FLAG
+	, a.SQUARE_FLAG
+	, a.FLAG_REBR
+	, a.GORKA_FLAG
+	, a.BONETA_FLAG
+	, a.DIST_km
+	, a.WHS_ID
+	, a.CODE
+	, a.CITY_ID
+	, a.BRANCH_ID
+	, a.COMPETITOR_ID
+	, a.ECHELON_ID
+	, a.SUBFRMT_ID
+	, a.RC_CNTR_ID
+	, a.SQUARE_TRADE
+	, a.REGION_ID
+	, a.SIZE_OF_POPULATION_TYPE
+	, a.SIZE_OF_POPULATION_TYPE2
+	, a.SEASON
+	, a.LOCAL_FAMILY_BUDGET
+	, a.HAS_ALCO_LICENCE
+	, a.TRAFIK
+	, a.METR
+	, a.SALE
+	, a.QTY_GORKA
+	, a.QTY_OHL
+	, a.QTY_Z
+	, a.RN
+	, a.WHS_ID_ANG
+	, a.CODE_ANG
+	, a.CITY_ID_ANG
+	, a.BRANCH_ID_ANG
+	, a.COMPETITOR_ID_ANG
+	, a.ECHELON_ID_ANG
+	, a.SUBFRMT_ID_ANG
+	, a.RC_CNTR_ID_ANG
+	, a.SQUARE_TRADE_ANG
+	, a.REGION_ID_ANG
+	, a.SIZE_OF_POPULATION_TYPE_ANG
+	, a.SIZE_OF_POPULATION_TYPE2_ANG
+	, a.SEASON_ANG
+	, a.LOCAL_FAMILY_BUDGET_ANG
+	, a.HAS_ALCO_LICENCE_ANG
+	, a.TRAFIK_ANG
+	, a.METR_ANG
+	, a.SALE_ANG
+	, QTY_GORKA_ANG
+	, QTY_OHL_ANG
+	, QTY_Z_ANG
+	, @param AS LEVEL_CALC
+	, a.OPEN_DT
+	, a.OPEN_DT_ANG
+FROM (
+		--DECLARE @param INT = 1;
+		SELECT s.*
+			 , ROW_NUMBER () OVER (PARTITION BY s.WHS_ID ORDER BY SEASON_FLAG, SUBFRMT_FLAG, BRANCH_FLAG, SALE_FLAG, METR_FLAG, BUDG_FLAG, POPUL_FLAG, COMP_FLAG, ALCO_FLAG, SQUARE_FLAG) AS RN
+		FROM REPORTS.[dbo].[V_KG_EXCEL_BASE] AS s
+
+		INNER JOIN REPORTS.[dbo].[FN_KG_LEVEL_WHS_EXCEL] (@param, @RN) AS lvl -- параметрическая вьюха
+			ON s.WHS_ID = lvl.WHS_ID
+
+			WHERE CASE WHEN @param = 0 THEN 
+								CASE WHEN 
+										(SEASON_FLAG IS NOT NULL
+										AND SUBFRMT_FLAG IS NOT NULL
+										AND	BRANCH_FLAG IS NOT NULL
+										AND BUDG_FLAG IS NOT NULL
+										AND POPUL_FLAG IS NOT NULL
+										AND SALE_FLAG IS NOT NULL
+										AND METR_FLAG IS NOT NULL
+										AND COMP_FLAG IS NOT NULL
+										AND ALCO_FLAG IS NOT NULL
+										AND SQUARE_FLAG IS NOT NULL)
+									THEN 1
+									ELSE 0
+								END
+					
+						WHEN @param = 1 THEN 
+								CASE WHEN 
+										(SEASON_FLAG IS NOT NULL
+										AND SUBFRMT_FLAG IS NOT NULL
+										AND BRANCH_FLAG IS NOT NULL
+										AND BUDG_FLAG IS NOT NULL
+										AND POPUL_FLAG IS NOT NULL
+										AND SALE_FLAG IS NOT NULL
+										AND METR_FLAG IS NOT NULL
+										AND COMP_FLAG IS NOT NULL
+										AND ALCO_FLAG IS NOT NULL)
+									THEN 1
+									ELSE 0
+								END
+
+						WHEN @param = 2 THEN 
+								CASE WHEN 
+										(SEASON_FLAG IS NOT NULL
+										AND SUBFRMT_FLAG IS NOT NULL
+										AND BRANCH_FLAG IS NOT NULL
+										AND BUDG_FLAG IS NOT NULL
+										AND POPUL_FLAG IS NOT NULL
+										AND SALE_FLAG IS NOT NULL
+										AND METR_FLAG IS NOT NULL
+										AND COMP_FLAG IS NOT NULL)
+									THEN 1
+									ELSE 0
+								END
+
+						WHEN @param = 3 THEN 
+								CASE WHEN 
+										(SEASON_FLAG IS NOT NULL
+										AND SUBFRMT_FLAG IS NOT NULL
+										AND BRANCH_FLAG IS NOT NULL
+										AND BUDG_FLAG IS NOT NULL
+										AND POPUL_FLAG IS NOT NULL
+										AND SALE_FLAG IS NOT NULL
+										AND METR_FLAG IS NOT NULL)
+									THEN 1
+									ELSE 0
+								END
+
+						WHEN @param = 4 THEN 
+								CASE WHEN 
+										(SEASON_FLAG IS NOT NULL
+										AND SUBFRMT_FLAG IS NOT NULL
+										AND BRANCH_FLAG IS NOT NULL
+										AND BUDG_FLAG IS NOT NULL
+										AND SALE_FLAG IS NOT NULL
+										AND METR_FLAG IS NOT NULL)
+									THEN 1
+									ELSE 0
+								END
+
+						WHEN @param = 5 THEN 
+								CASE WHEN 
+										(SEASON_FLAG IS NOT NULL
+										AND SUBFRMT_FLAG IS NOT NULL
+										AND BRANCH_FLAG IS NOT NULL
+										AND SALE_FLAG IS NOT NULL
+										AND METR_FLAG IS NOT NULL)
+									THEN 1
+									ELSE 0
+								END
+
+						WHEN @param = 6 THEN 
+								CASE WHEN 
+										(SUBFRMT_FLAG IS NOT NULL
+										AND BRANCH_FLAG IS NOT NULL
+										AND SALE_FLAG IS NOT NULL
+										AND METR_FLAG IS NOT NULL)
+									THEN 1
+									ELSE 0
+								END
+				END = 1 
+
+	) AS a
+WHERE RN <= @RN;
+
+GO
+
+
