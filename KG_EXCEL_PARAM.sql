@@ -1,0 +1,236 @@
+USE [REPORTS]
+GO
+
+/****** Object:  UserDefinedFunction [dbo].[FN_KG_LEVEL_WHS_EXCEL]    Script Date: 03.02.2020 16:44:48 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+ALTER FUNCTION [dbo].[FN_KG_LEVEL_WHS_EXCEL]
+
+	(
+		@param INT
+	,	@RN INT
+	)
+
+--author: haitov_bn
+--date:	2018-11-12
+--description: параметрическая вьюха, которая формирует список ТТ после n(@param)-ограничений
+
+RETURNS TABLE 
+AS
+RETURN
+
+	--DECLARE @param INT = 0; DECLARE @RN INT = 0;
+	SELECT DISTINCT WHS_ID
+	FROM (
+			--DECLARE @param INT = 0; DECLARE @RN INT = 0;
+			SELECT s.*
+					, ROW_NUMBER () OVER (PARTITION BY s.WHS_ID ORDER BY SEASON_FLAG, SUBFRMT_FLAG, BRANCH_FLAG, SALE_FLAG, METR_FLAG, BUDG_FLAG, POPUL_FLAG, COMP_FLAG, ALCO_FLAG, SQUARE_FLAG) AS RN
+			FROM REPORTS.[dbo].[V_KG_EXCEL_BASE] AS s
+			WHERE CASE WHEN @param = 0 THEN 
+								CASE WHEN 
+										(SEASON_FLAG IS NOT NULL
+										AND SUBFRMT_FLAG IS NOT NULL
+										AND	BRANCH_FLAG IS NOT NULL
+										AND BUDG_FLAG IS NOT NULL
+										AND POPUL_FLAG IS NOT NULL
+										AND SALE_FLAG IS NOT NULL
+										AND METR_FLAG IS NOT NULL
+										AND COMP_FLAG IS NOT NULL
+										AND ALCO_FLAG IS NOT NULL
+										AND SQUARE_FLAG IS NOT NULL)
+									THEN 1
+									ELSE 0
+								END
+					
+						WHEN @param = 1 THEN 
+								CASE WHEN 
+										(SEASON_FLAG IS NOT NULL
+										AND SUBFRMT_FLAG IS NOT NULL
+										AND BRANCH_FLAG IS NOT NULL
+										AND BUDG_FLAG IS NOT NULL
+										AND POPUL_FLAG IS NOT NULL
+										AND SALE_FLAG IS NOT NULL
+										AND METR_FLAG IS NOT NULL
+										AND COMP_FLAG IS NOT NULL
+										AND ALCO_FLAG IS NOT NULL)
+									THEN 1
+									ELSE 0
+								END
+
+						WHEN @param = 2 THEN 
+								CASE WHEN 
+										(SEASON_FLAG IS NOT NULL
+										AND SUBFRMT_FLAG IS NOT NULL
+										AND BRANCH_FLAG IS NOT NULL
+										AND BUDG_FLAG IS NOT NULL
+										AND POPUL_FLAG IS NOT NULL
+										AND SALE_FLAG IS NOT NULL
+										AND METR_FLAG IS NOT NULL
+										AND COMP_FLAG IS NOT NULL)
+									THEN 1
+									ELSE 0
+								END
+
+						WHEN @param = 3 THEN 
+								CASE WHEN 
+										(SEASON_FLAG IS NOT NULL
+										AND SUBFRMT_FLAG IS NOT NULL
+										AND BRANCH_FLAG IS NOT NULL
+										AND BUDG_FLAG IS NOT NULL
+										AND POPUL_FLAG IS NOT NULL
+										AND SALE_FLAG IS NOT NULL
+										AND METR_FLAG IS NOT NULL)
+									THEN 1
+									ELSE 0
+								END
+
+						WHEN @param = 4 THEN 
+								CASE WHEN 
+										(SEASON_FLAG IS NOT NULL
+										AND SUBFRMT_FLAG IS NOT NULL
+										AND BRANCH_FLAG IS NOT NULL
+										AND BUDG_FLAG IS NOT NULL
+										AND SALE_FLAG IS NOT NULL
+										AND METR_FLAG IS NOT NULL)
+									THEN 1
+									ELSE 0
+								END
+
+						WHEN @param = 5 THEN 
+								CASE WHEN 
+										(SEASON_FLAG IS NOT NULL
+										AND SUBFRMT_FLAG IS NOT NULL
+										AND BRANCH_FLAG IS NOT NULL
+										AND SALE_FLAG IS NOT NULL
+										AND METR_FLAG IS NOT NULL)
+									THEN 1
+									ELSE 0
+								END
+
+						WHEN @param = 6 THEN 
+								CASE WHEN 
+										(SUBFRMT_FLAG IS NOT NULL
+										AND BRANCH_FLAG IS NOT NULL
+										AND SALE_FLAG IS NOT NULL
+										AND METR_FLAG IS NOT NULL)
+									THEN 1
+									ELSE 0
+								END
+				END = 1 
+	
+		) AS a
+	WHERE RN <= @RN
+
+	EXCEPT
+
+	SELECT DISTINCT WHS_ID
+	FROM (
+			SELECT s.*
+					, ROW_NUMBER () OVER (PARTITION BY s.WHS_ID ORDER BY SEASON_FLAG, SUBFRMT_FLAG, BRANCH_FLAG, SALE_FLAG, METR_FLAG, BUDG_FLAG, POPUL_FLAG, COMP_FLAG, ALCO_FLAG, SQUARE_FLAG) AS RN
+			FROM REPORTS.[dbo].[V_KG_EXCEL_BASE] AS s
+			WHERE CASE WHEN @param-1 = 0 THEN 
+								CASE WHEN 
+										(SEASON_FLAG IS NOT NULL
+										AND SUBFRMT_FLAG IS NOT NULL
+										AND	BRANCH_FLAG IS NOT NULL
+										AND BUDG_FLAG IS NOT NULL
+										AND POPUL_FLAG IS NOT NULL
+										AND SALE_FLAG IS NOT NULL
+										AND METR_FLAG IS NOT NULL
+										AND COMP_FLAG IS NOT NULL
+										AND ALCO_FLAG IS NOT NULL
+										AND SQUARE_FLAG IS NOT NULL)
+									THEN 1
+									ELSE 0
+								END
+					
+						WHEN @param-1 = 1 THEN 
+								CASE WHEN 
+										(SEASON_FLAG IS NOT NULL
+										AND SUBFRMT_FLAG IS NOT NULL
+										AND BRANCH_FLAG IS NOT NULL
+										AND BUDG_FLAG IS NOT NULL
+										AND POPUL_FLAG IS NOT NULL
+										AND SALE_FLAG IS NOT NULL
+										AND METR_FLAG IS NOT NULL
+										AND COMP_FLAG IS NOT NULL
+										AND ALCO_FLAG IS NOT NULL)
+									THEN 1
+									ELSE 0
+								END
+
+						WHEN @param-1 = 2 THEN 
+								CASE WHEN 
+										(SEASON_FLAG IS NOT NULL
+										AND SUBFRMT_FLAG IS NOT NULL
+										AND BRANCH_FLAG IS NOT NULL
+										AND BUDG_FLAG IS NOT NULL
+										AND POPUL_FLAG IS NOT NULL
+										AND SALE_FLAG IS NOT NULL
+										AND METR_FLAG IS NOT NULL
+										AND COMP_FLAG IS NOT NULL)
+									THEN 1
+									ELSE 0
+								END
+
+						WHEN @param-1 = 3 THEN 
+								CASE WHEN 
+										(SEASON_FLAG IS NOT NULL
+										AND SUBFRMT_FLAG IS NOT NULL
+										AND BRANCH_FLAG IS NOT NULL
+										AND BUDG_FLAG IS NOT NULL
+										AND POPUL_FLAG IS NOT NULL
+										AND SALE_FLAG IS NOT NULL
+										AND METR_FLAG IS NOT NULL)
+									THEN 1
+									ELSE 0
+								END
+
+						WHEN @param-1 = 4 THEN 
+								CASE WHEN 
+										(SEASON_FLAG IS NOT NULL
+										AND SUBFRMT_FLAG IS NOT NULL
+										AND BRANCH_FLAG IS NOT NULL
+										AND BUDG_FLAG IS NOT NULL
+										AND SALE_FLAG IS NOT NULL
+										AND METR_FLAG IS NOT NULL)
+									THEN 1
+									ELSE 0
+								END
+
+						WHEN @param-1 = 5 THEN 
+								CASE WHEN 
+										(SEASON_FLAG IS NOT NULL
+										AND SUBFRMT_FLAG IS NOT NULL
+										AND BRANCH_FLAG IS NOT NULL
+										AND SALE_FLAG IS NOT NULL
+										AND METR_FLAG IS NOT NULL)
+									THEN 1
+									ELSE 0
+								END
+
+						WHEN @param-1 = 6 THEN 
+								CASE WHEN 
+										(SUBFRMT_FLAG IS NOT NULL
+										AND BRANCH_FLAG IS NOT NULL
+										AND SALE_FLAG IS NOT NULL
+										AND METR_FLAG IS NOT NULL)
+									THEN 1
+									ELSE 0
+								END
+
+
+					END = 1 
+	
+		) AS a
+	WHERE RN <= @RN;
+
+GO
+
+
