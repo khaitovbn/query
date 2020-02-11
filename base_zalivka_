@@ -1,0 +1,89 @@
+
+Option Explicit
+Dim myRibbon As IRibbonUI
+Dim pressed_state(30) As Boolean
+'Загрузка ленты при открытии книги из xml
+Public Sub RibbonLoading(ribbon As IRibbonUI)
+wb.Current_Ribbon = ribbon
+Set myRibbon = ribbon
+
+End Sub
+Public Sub Format_Metr(num) 'num
+    Columns(num).Select
+    Selection.Replace What:=",", Replacement:=".", LookAt:=xlPart, _
+        SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+        ReplaceFormat:=False
+End Sub
+
+
+Public Sub kg_load(ribbon As IRibbonControl)
+Dim msq As ADODB.Connection
+Dim Y, j, k, i As Long
+Dim sql_query, sql_qrr, user_msg, date_msg As String
+Dim max_a, max_b, max_c, max_d, max_e, max_f, max_g, max_h, max_i, max_j, max_k, max_l, max As Long
+Dim sql_qry As String
+Dim sql_qryy As String
+Dim UserName As String
+Dim sqldt As New Command
+Dim sqlTD As New Command
+Dim rs As ADODB.Recordset
+
+'Application.ScreenUpdating = False
+       
+Set msq = BASConnection(): msq.CommandTimeout = 0: msq.Open
+
+Set sqldt = New ADODB.Command: Set sqldt.ActiveConnection = msq
+
+UserName = Environ("USERNAME")
+
+max_a = data_.Cells(Rows.Count, 1).End(xlUp).Row
+max_b = data_.Cells(Rows.Count, 2).End(xlUp).Row
+max_c = data_.Cells(Rows.Count, 3).End(xlUp).Row
+max_d = data_.Cells(Rows.Count, 4).End(xlUp).Row
+max_e = data_.Cells(Rows.Count, 4).End(xlUp).Row
+
+max = WorksheetFunction.max(max_a)
+
+'форматируем столбцы с decimal = '.'
+'c 3его по 5ый столбец
+'For i = 3 To 5
+'    Format_Metr (i)
+'Next i
+
+
+'-------------------Загрузка данных на MS----------------------------------------------
+sql_query = "TRUNCATE TABLE REPORTS.dbo.T_WHS_TEST_KG"
+msq.Execute sql_query
+i = 2
+
+ennd:
+
+sql_query = "INSERT INTO REPORTS.dbo.T_WHS_TEST_KG values "
+k = 1
+While i <> max + 1
+    sql_query = sql_query & "(" & data_.Cells(i, 1).Value & ",'" & CStr(data_.Cells(i, 2).Value) & "'," & Replace(CStr(data_.Cells(i, 3).Value), ",", ".") & "," & Replace(CStr(data_.Cells(i, 4).Value), ",", ".") & "," & data_.Cells(i, 5).Value & "),"
+    
+    i = i + 1
+    k = k + 1
+    If k = 1000 Then
+        sql_query = Left(sql_query, Len(sql_query) - 1)
+        msq.Execute sql_query
+        GoTo ennd
+    End If
+Wend
+
+sql_query = Left(sql_query, Len(sql_query) - 1)
+Cells(1, 10).Value = sql_query
+msq.Execute sql_query
+
+
+sql_query = "EXEC REPORTS.dbo.PRC_KG_EXCEL;"
+msq.Execute sql_query
+
+MsgBox "Ãîòîâî"
+
+wb.RefreshAll
+
+Application.ScreenUpdating = True
+
+End Sub
