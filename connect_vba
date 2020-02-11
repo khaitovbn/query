@@ -1,0 +1,26 @@
+Function BASConnection() As ADODB.Connection
+
+Dim msq2 As New ADODB.Connection
+Dim msq As New ADODB.Connection
+Dim user As String
+
+ 
+msq.ConnectionString = "Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=True;" & _
+                        " Initial Catalog=QS; " & _
+                        " Data Source=DSL-DEV-STAT;Use Procedure for Prepare=1;Auto Translate=True;Packet Size=4096;" & _
+                        " Use Encryption for Data=False;Tag with column collation when possible=False"
+                        
+msq.CommandTimeout = 0
+
+Set BASConnection = msq
+
+End Function
+Public Function RunQuery(query As String) As ADODB.Recordset
+    Dim msq As ADODB.Connection
+    Set msq = Connect.BASConnection(): msq.Open
+    Set RunQuery = msq.Execute(query)
+End Function
+
+
+
+
