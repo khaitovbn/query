@@ -1,0 +1,909 @@
+Sub StopApp()
+Application.EnableEvents = False
+Application.ScreenUpdating = False
+Application.DisplayAlerts = False
+Application.Calculation = xlCalculationManual
+End Sub
+
+Sub StartApp()
+Application.EnableEvents = True
+Application.ScreenUpdating = True
+Application.Calculation = xlCalculationAutomatic
+Application.DisplayAlerts = True
+End Sub
+
+----------------
+Function DSLConnection() As ADODB.Connection
+
+Dim msq2 As New ADODB.Connection
+Dim msq As New ADODB.Connection
+Dim user As String
+
+ 
+msq.ConnectionString = "Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=True;" & _
+                        " Initial Catalog=REPORTS; " & _
+                        " Data Source=DSL-DEV-STAT;Use Procedure for Prepare=1;Auto Translate=True;Packet Size=4096;" & _
+                        " Use Encryption for Data=False;Tag with column collation when possible=False"
+                        
+msq.CommandTimeout = 0
+
+Set DSLConnection = msq
+
+End Function
+Public Function RunQuery(query As String) As ADODB.Recordset
+    Dim msq As ADODB.Connection
+    Set msq = Connect.DSLConnection(): msq.Open
+    Set RunQuery = msq.Execute(query)
+End Function
+
+
+----------------
+
+
+Sub header1()
+' Dim mas() As Variant
+Dim sh As Sheets
+Dim max_head As Integer
+    'âûáèðàåì ëèñò Main
+    Main_list.Activate
+    'Ìàêñ ñòðîêà â template
+    max_head = Template.Cells(Rows.Count, 10).End(xlUp).Row
+    'Ìàêñ ñòðîêà â Data
+    max_range = Data.Cells(Rows.Count, 1).End(xlUp).Row
+    Data.Cells.HorizontalAlignment = xlCenter
+    
+For ii = 5 To max_range
+    For i = 2 To 13
+        Range(Cells(ii, i), Cells(ii + 5, i)).Select
+        FillStyle
+        Cells(ii, i).Select
+        'Cells(5, i) = i
+        'boldText
+    Next i
+ii = ii + 5
+Next ii
+
+End Sub
+
+Sub header2()
+' Dim mas() As Variant
+Dim sh As Sheets
+Dim max_head As Integer
+    'âûáèðàåì ëèñò Main
+    Main_list.Activate
+    'Ìàêñ ñòðîêà â template
+    max_head = Template.Cells(Rows.Count, 10).End(xlUp).Row
+    'Ìàêñ ñòðîêà â Data
+    max_range = Data.Cells(Rows.Count, 1).End(xlUp).Row
+    Data.Cells.HorizontalAlignment = xlCenter
+    
+For ii = 5 To max_range
+    For i = 14 To 14
+        Range(Cells(ii, i), Cells(ii + 5, i + 13)).Select
+        FillStyle
+        Cells(ii, i).Select
+        'Cells(5, i) = i
+        'boldText
+    Next i
+ii = ii + 5
+Next ii
+
+End Sub
+
+Sub clear_cells()
+' Dim mas() As Variant
+Dim sh As Sheets
+Dim max_head As Integer
+    'âûáèðàåì ëèñò Main
+    Main_list.Activate
+    'Ìàêñ ñòðîêà â template
+    max_head = Template.Cells(Rows.Count, 10).End(xlUp).Row
+    'Ìàêñ ñòðîêà â Data
+    max_range = Data.Cells(Rows.Count, 1).End(xlUp).Row
+    Data.Cells.HorizontalAlignment = xlCenter
+    
+For ii = 5 To max_range
+    For i = 2 To 2
+        Range(Cells(ii, i), Cells(ii + 5, i + 25)).Select
+        'FillStyle
+        White_cells
+        Cells(ii, i).Select
+    Next i
+ii = ii + 5
+Next ii
+
+End Sub
+Sub font_size()
+' Dim mas() As Variant
+Dim sh As Sheets
+Dim max_head As Integer
+    'âûáèðàåì ëèñò Main
+    Main_list.Activate
+    'Ìàêñ ñòðîêà â template
+    max_head = Template.Cells(Rows.Count, 10).End(xlUp).Row
+    'Ìàêñ ñòðîêà â Data
+    max_range = Data.Cells(Rows.Count, 1).End(xlUp).Row
+    Data.Cells.HorizontalAlignment = xlCenter
+    
+For ii = 5 To max_range
+    For i = 2 To 2
+        Range(Cells(ii, i), Cells(ii + 5, i + 10)).Select
+        boldText
+        Cells(ii, i).Select
+    Next i
+ii = ii + 5
+Next ii
+
+End Sub
+
+Sub format_M5()
+' Dim mas() As Variant
+Dim sh As Sheets
+Dim max_head As Integer
+    'âûáèðàåì ëèñò Main
+    Main_list.Activate
+    'Ìàêñ ñòðîêà â template
+    max_head = Template.Cells(Rows.Count, 10).End(xlUp).Row
+    'Ìàêñ ñòðîêà â Data
+    max_range = Data.Cells(Rows.Count, 1).End(xlUp).Row
+    Data.Cells.HorizontalAlignment = xlCenter
+    
+For ii = 5 To max_range
+    For i = 13 To 13
+        Range(Cells(ii, i), Cells(ii + 5, i)).Select
+        size_text8
+        Cells(ii, i).Select
+    Next i
+ii = ii + 5
+Next ii
+
+End Sub
+
+Sub CopyFormat()
+Dim sh As Sheets
+Dim max_head As Integer
+    'âûáèðàåì ëèñò Main
+    Main_list.Activate
+    'Ìàêñ ñòðîêà â template
+    max_head = Template.Cells(Rows.Count, 10).End(xlUp).Row
+    'Ìàêñ ñòðîêà â Data
+    max_range = Data.Cells(Rows.Count, 1).End(xlUp).Row
+    Data.Cells.HorizontalAlignment = xlCenter
+    
+For ii = 5 To max_range
+    For i = 2 To 2
+        Template.Range(Template.Cells(5, 2), Template.Cells(10, 35)).Copy
+        Main_list.Range(Cells(ii, i), Cells(ii + 5, i + 33)).PasteSpecial Paste:=xlPasteFormats, Operation:=xlNone, _
+            SkipBlanks:=False, Transpose:=False
+    Next i
+ii = ii + 5
+Next ii
+
+End Sub
+
+
+Sub FillStyle()
+
+    With Selection.Borders(xlEdgeLeft)
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .Weight = xlThin
+    End With
+
+End Sub
+
+Sub boldText()
+
+    Selection.Font.Bold = True
+    With Selection
+        .Name = "Calibri"
+       ' .HorizontalAlignment = xlCenter
+       ' .VerticalAlignment = xlTop
+       ' .WrapText = True
+        .Font.Size = 8
+    End With
+
+End Sub
+Sub size_text8()
+
+    
+    With Selection
+       ' .Name = "Calibri"
+       ' .HorizontalAlignment = xlCenter
+       ' .VerticalAlignment = xlTop
+       ' .WrapText = True
+        .Font.Size = 8
+    End With
+
+End Sub
+Sub White_cells()
+    With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .ThemeColor = xlThemeColorDark1
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+End Sub
+
+
+---------------------------------------------------------
+
+
+Sub header1_mk()
+' Dim mas() As Variant
+Dim sh As Sheets
+Dim max_head As Integer
+    'âûáèðàåì ëèñò Main
+    Main_list_MK.Activate
+    'Ìàêñ ñòðîêà â template
+    max_head = Template.Cells(Rows.Count, 10).End(xlUp).Row
+    'Ìàêñ ñòðîêà â Data
+    max_range = Data_MK.Cells(Rows.Count, 1).End(xlUp).Row
+    Data.Cells.HorizontalAlignment = xlCenter
+    
+For ii = 5 To max_range
+    For i = 2 To 12
+        Range(Cells(ii, i), Cells(ii + 5, i)).Select
+        FillStyle
+        Cells(ii, i).Select
+        'Cells(5, i) = i
+        'boldText
+    Next i
+ii = ii + 5
+Next ii
+
+End Sub
+
+Sub header2_mk()
+' Dim mas() As Variant
+Dim sh As Sheets
+Dim max_head As Integer
+    'âûáèðàåì ëèñò Main
+    Main_list_MK.Activate
+    'Ìàêñ ñòðîêà â template
+    max_head = Template.Cells(Rows.Count, 10).End(xlUp).Row
+    'Ìàêñ ñòðîêà â Data
+    max_range = Data_MK.Cells(Rows.Count, 1).End(xlUp).Row
+    Data.Cells.HorizontalAlignment = xlCenter
+    
+For ii = 5 To max_range
+    For i = 13 To 13
+        Range(Cells(ii, i), Cells(ii + 5, i + 13)).Select
+        FillStyle
+        Cells(ii, i).Select
+        'Cells(5, i) = i
+        'boldText
+    Next i
+ii = ii + 5
+Next ii
+
+End Sub
+
+Sub clear_cells_mk()
+' Dim mas() As Variant
+Dim sh As Sheets
+Dim max_head As Integer
+    'âûáèðàåì ëèñò Main
+    Main_list_MK.Activate
+    'Ìàêñ ñòðîêà â template
+    max_head = Template.Cells(Rows.Count, 10).End(xlUp).Row
+    'Ìàêñ ñòðîêà â Data
+    max_range = Data_MK.Cells(Rows.Count, 1).End(xlUp).Row
+    Data_MK.Cells.HorizontalAlignment = xlCenter
+    
+For ii = 5 To max_range
+    For i = 2 To 2
+        Range(Cells(ii, i), Cells(ii + 5, i + 24)).Select
+        'FillStyle
+        White_cells
+        Cells(ii, i).Select
+    Next i
+ii = ii + 5
+Next ii
+
+End Sub
+
+
+Sub CopyFormat_MK()
+Dim sh As Sheets
+Dim max_head As Integer
+    'âûáèðàåì ëèñò Main
+    Main_list_MK.Activate
+    'Ìàêñ ñòðîêà â template
+    max_head = Template.Cells(Rows.Count, 10).End(xlUp).Row
+    'Ìàêñ ñòðîêà â Data
+    max_range = Data_MK.Cells(Rows.Count, 1).End(xlUp).Row
+    Data_MK.Cells.HorizontalAlignment = xlCenter
+    
+For ii = 5 To max_range
+    For i = 2 To 2
+        Template.Range(Template.Cells(16, 2), Template.Cells(21, 32)).Copy
+        Main_list_MK.Range(Cells(ii, i), Cells(ii + 5, i + 30)).PasteSpecial Paste:=xlPasteFormats, Operation:=xlNone, _
+            SkipBlanks:=False, Transpose:=False
+    Next i
+ii = ii + 5
+Next ii
+
+End Sub
+
+Sub FillStyle()
+
+    With Selection.Borders(xlEdgeLeft)
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .Weight = xlThin
+    End With
+
+End Sub
+
+Sub boldText()
+
+    Selection.Font.Bold = True
+    With Selection
+        .Name = "Calibri"
+       ' .HorizontalAlignment = xlCenter
+       ' .VerticalAlignment = xlTop
+       ' .WrapText = True
+        .Font.Size = 8
+    End With
+
+End Sub
+Sub size_text8()
+
+    
+    With Selection
+       ' .Name = "Calibri"
+       ' .HorizontalAlignment = xlCenter
+       ' .VerticalAlignment = xlTop
+       ' .WrapText = True
+        .Font.Size = 8
+    End With
+
+End Sub
+Sub White_cells()
+    With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .ThemeColor = xlThemeColorDark1
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+End Sub
+
+
+
+
+-----------------------------------------------------
+Sub getdata()   '(ribbon As IRibbonControl)
+
+Dim msq As ADODB.Connection
+
+Dim sql As String
+Dim sqldt As New Command
+Dim sqlTD As New Command
+Dim rs As ADODB.Recordset
+Dim mas() As Variant
+
+'Application.ScreenUpdating = False
+Data.Cells.Clear
+Data.Activate
+
+Set msq = DSLConnection(): msq.CommandTimeout = 0: msq.Open
+
+Set sqldt = New ADODB.Command: Set sqldt.ActiveConnection = msq
+
+
+'Ñîáèðàåì äàííûå
+sql = "SELECT * " _
+     & " FROM REPORTS.dbo.V_MM_RDM4947 ORDER BY NAME_TS,AN_PORYADOK, PR; "
+Set rs = Connect.RunQuery(sql)
+
+'Âûãðóçêà íàçâàíèé ñòîëáöîâ íà ëèñò èñòî÷íèê ñ äàííûìè
+For j = 0 To rs.Fields.Count - 1
+    Data.Cells(1, j + 1).Value = rs.Fields(j).Name
+Next j
+
+'êîïèðóåì äàííûå èç çàïðîñà â Excel
+Data.Range("A2").CopyFromRecordset rs
+
+'Äàòà îòêðûòèÿ
+Data.Range("AA1") = "Äàòà îòêðûòèÿ"
+    max_range = Data.Cells(Rows.Count, 1).End(xlUp).Row
+    Data.Cells.HorizontalAlignment = xlCenter
+    
+For i = 2 To max_range
+    Data.Cells(i, 27).FormulaR1C1 = "=RC[-17]+0"
+Next i
+
+'Ïîëó÷àåì êîëè÷åñòâî ñòðîê â äàííûõ
+max_head = Data.Cells(Rows.Count, 1).End(xlUp).Row
+
+End Sub
+
+Sub templateCopy()
+    Main_list.Activate
+    ClearList
+    Template.Range(Template.Cells(2, 2), Template.Cells(4, 35)).Copy Main_list.Cells(2, 2)
+End Sub
+
+Sub ClearList()
+    Main_list.Activate
+    ActiveSheet.Cells.Clear
+End Sub
+'Íå èñïîëüçóåòñÿ
+Sub InsertData()
+Dim max_head As Integer
+    'âûáèðàåì ëèñò Main
+    Main_list.Activate
+    'Ìàêñ ñòðîêà â template
+    max_head = Template.Cells(Rows.Count, 10).End(xlUp).Row
+    'Ìàêñ ñòðîêà â Data
+    max_range = Data.Cells(Rows.Count, 1).End(xlUp).Row + 3
+    Data.Cells.HorizontalAlignment = xlCenter
+    
+    For i = 5 To max_range
+    
+        Main_list.Cells(i, 2) = Data.Cells(i - 3, 8).Value
+        Main_list.Cells(i, 3) = Data.Cells(i - 3, 9).Value
+        Main_list.Cells(i, 4) = Data.Cells(i - 3, 10).Value
+        Main_list.Cells(i, 5) = Data.Cells(i - 3, 1).Value
+        Main_list.Cells(i, 6) = Data.Cells(i - 3, 5).Value
+        Main_list.Cells(i, 7) = Data.Cells(i - 3, 3).Value
+        Main_list.Cells(i, 8) = Data.Cells(i - 3, 4).Value
+        Main_list.Cells(i, 9) = Data.Cells(i - 3, 2).Value
+        Main_list.Cells(i, 10) = Data.Cells(i - 3, 6).Value
+        Main_list.Cells(i, 13) = Data.Cells(i - 3, 7).Value
+        Main_list.Cells(i, 12) = Data.Cells(i - 3, 11).Value
+        
+        
+        'Main_list.Cells(2, i).Select
+        'Data.Activate
+        'Data.Cells(i, 8).Select
+        'êîïèðóåì â painting èç Data, ïî ïðàâèëàì îïèñàííûì â Template. 'Íàèìåíîâàíèå ñòîëáåö, èç êàêîãî ñòîëáöà'
+        'Data.Range(Data.Cells(2, Template.Cells(i, 11).Value), Data.Cells(max_range, Template.Cells(i, 11).Value)).Copy Main_list.Cells(3, i)
+        'Âûáèðàåì îäèí ýëåìåíò øàïêè
+        'Main_list.Cells(i, 2).Select
+    Next i
+    
+End Sub
+
+Sub InsertData_v2()
+Dim max_head As Integer
+    'âûáèðàåì ëèñò Main
+    Main_list.Activate
+    'Ìàêñ ñòðîêà â template
+    max_head = Template.Cells(Rows.Count, 10).End(xlUp).Row
+    'Ìàêñ ñòðîêà â Data
+    max_range = Data.Cells(Rows.Count, 1).End(xlUp).Row + 3
+    Data.Cells.HorizontalAlignment = xlCenter
+    
+        For i = 5 To max_range
+            Main_list.Cells(i, 2).FormulaR1C1 = "='Äàííûå ÌÌ'!R[-3]C[6]"
+            Main_list.Cells(i, 3).FormulaR1C1 = "='Äàííûå ÌÌ'!R[-3]C[6]"
+            Main_list.Cells(i, 4).FormulaR1C1 = "='Äàííûå ÌÌ'!R[-3]C[23]"
+            Main_list.Cells(i, 5).FormulaR1C1 = "='Äàííûå ÌÌ'!R[-3]C[-4]"
+            Main_list.Cells(i, 6).FormulaR1C1 = "='Äàííûå ÌÌ'!R[-3]C[-1]"
+            Main_list.Cells(i, 7).FormulaR1C1 = "='Äàííûå ÌÌ'!R[-3]C[-4]"
+            Main_list.Cells(i, 8).FormulaR1C1 = "='Äàííûå ÌÌ'!R[-3]C[-4]"
+            Main_list.Cells(i, 9).FormulaR1C1 = "='Äàííûå ÌÌ'!R[-3]C[-7]"
+            Main_list.Cells(i, 10).FormulaR1C1 = "='Äàííûå ÌÌ'!R[-3]C[-4]"
+            Main_list.Cells(i, 12).FormulaR1C1 = "='Äàííûå ÌÌ'!R[-3]C[-1]"
+            Main_list.Cells(i, 13).FormulaR1C1 = "='Äàííûå ÌÌ'!R[-3]C[-6]"
+        Next i
+    
+End Sub
+Sub InsertFormul()
+Dim max_head As Integer
+    'âûáèðàåì ëèñò Main
+    Main_list.Activate
+    'Ìàêñ ñòðîêà â Data
+    max_range = Data.Cells(Rows.Count, 1).End(xlUp).Row + 3
+    Data.Cells.HorizontalAlignment = xlCenter
+    
+    For ii = 14 To 27
+        For i = 5 To max_range
+            Main_list.Cells(i, ii).FormulaR1C1 = _
+            "=IFERROR(IF('Äàííûå ÌÌ'!R[-3]C[-2]/30/1000=0,"""",'Äàííûå ÌÌ'!R[-3]C[-2]/30/1000),"""")"
+        i = i + 5
+        Next i
+    
+    Next ii
+    
+    For ii = 14 To 27
+        For i = 6 To max_range
+            Main_list.Cells(i, ii).FormulaR1C1 = _
+            "=IFERROR(IF(OR(RC6=RC10,RC6=""åñòü""),IFERROR(IF('Äàííûå ÌÌ'!R[-3]C[-2]/1000=0,"""",'Äàííûå ÌÌ'!R[-3]C[-2]/1000),""""),IF(RC6=""íåò"",(IFERROR(IF('Äàííûå ÌÌ'!R[-3]C[-2]/1000=0,"""",'Äàííûå ÌÌ'!R[-3]C[-2]/1000),"""")/0.93))),"""")"
+        i = i + 5
+        Next i
+    Next ii
+    
+    For ii = 14 To 27
+        For i = 7 To max_range
+            Main_list.Cells(i, ii).FormulaR1C1 = _
+            "=IFERROR(IF(RC5=RIGHT(RC8,LEN(RC5)),R[-2]C,IF(OR(RC6=RC10,RC10=""åñòü""),IFERROR(IF('Äàííûå ÌÌ'!R[-3]C[-2]/1000=0,"""",'Äàííûå ÌÌ'!R[-3]C[-2]/1000),""""),IF(RC10=""íåò"",(IFERROR(IF('Äàííûå ÌÌ'!R[-3]C[-2]/1000=0,"""",'Äàííûå ÌÌ'!R[-3]C[-2]/1000),"""")/0.93)))),"""")"
+        i = i + 5
+        Next i
+    Next ii
+    
+    For ii = 14 To 27
+        For i = 8 To max_range
+            Main_list.Cells(i, ii).FormulaR1C1 = _
+            "=IFERROR(R[-2]C/R[-1]C-1,"""")"
+        i = i + 5
+        Next i
+    Next ii
+    
+    For ii = 14 To 27
+        For i = 9 To max_range
+            Main_list.Cells(i, ii).FormulaR1C1 = _
+            "=IFERROR(IF('Äàííûå ÌÌ'!R[-3]C[-2]="""","""",'Äàííûå ÌÌ'!R[-3]C[-2]),"""")"
+        i = i + 5
+        Next i
+    Next ii
+    
+    For ii = 14 To 27
+        For i = 10 To max_range
+            Main_list.Cells(i, ii).FormulaR1C1 = _
+            "=IFERROR(IF('Äàííûå ÌÌ'!R[-3]C[-2]="""","""",'Äàííûå ÌÌ'!R[-3]C[-2]),"""")"
+        i = i + 5
+        
+        Next i
+    Next ii
+  
+  
+            For i = 5 To max_range
+            Main_list.Cells(i, 11).FormulaR1C1 = _
+                "=IFERROR(" & Chr(10) & "IF(ABS(RC[1])>15%," & Chr(10) & "IF(RC[-8]=0,""ÑÀ""," & Chr(10) & "   IF(RC[-8]=1," & Chr(10) & "      IF(R[3]C[13]<>"""",""ÌÂ""," & Chr(10) & "         IF(R[3]C[10]<>""""," & Chr(10) & "            IF(AND(AVERAGE(R[3]C[9]:R[3]C[10])<-0.3,AVERAGE(R[5]C[9]:R[5]C[10])<0.8,AVERAGE(R[4]C[9]:R[4]C[10])>0.8),""Àíàëîã!""," & Chr(10) & "                        IF(AND(AVERAGE(R[3]C[9]:R[3]C[10])<-0.3,AVERAGE(R[5]C[9]:R[5]C[10])>0.8),""Àíàëîã!""," & Chr(10) & " " & _
+                "                            IF(AVERAGE(R[3]C[9]:R[3]C[10])>0.3,""Àíàëîã""," & Chr(10) & """ÎÊ"")))," & Chr(10) & " IF(R[3]C[5]="""",""ÎÊ""," & Chr(10) & "   IF(R[3]C[6]=""""," & Chr(10) & "     IF(AVERAGE(R[3]C[3]:R[3]C[5])<-0.3,""Àíàëîã!""," & Chr(10) & """ÎÊ"")," & Chr(10) & " IF(AND(AVERAGE(R[3]C[5]:R[3]C[6])<-0.3,AVERAGE(R[5]C[5]:R[5]C[6])<0.8,AVERAGE(R[4]C[5]:R[4]C[6])>0.8),""Àíàëîã!""," & Chr(10) & "    IF(AND(AVERAGE(R[3]C[5]:R[3]C[6])<-0.3,AVERAGE(R[5]C[" & _
+                "5]:R[5]C[6])>0.8),""Àíàëîã!""," & Chr(10) & "       IF(AVERAGE(R[3]C[5]:R[3]C[6])>0.3,""Àíàëîã""," & Chr(10) & """ÎÊ"")))))))))," & Chr(10) & "IF(RC[-8]=0,""ÑÀ""," & Chr(10) & "   IF(RC[-8]=1," & Chr(10) & "      IF(R[3]C[13]<>"""",""ÌÂ""," & Chr(10) & "         IF(R[3]C[10]<>""""," & Chr(10) & "            IF(AND(AVERAGE(R[3]C[9]:R[3]C[10])<-0.2,AVERAGE(R[5]C[9]:R[5]C[10])<0.8,AVERAGE(R[4]C[9]:R[4]C[10])>0.8),""Àíàëîã!""," & Chr(10) & "                        IF(AND(AVERAGE(" & _
+                "R[3]C[9]:R[3]C[10])<-0.2,AVERAGE(R[5]C[9]:R[5]C[10])>0.8),""Àíàëîã!""," & Chr(10) & "                             IF(AVERAGE(R[3]C[9]:R[3]C[10])>0.2,""Àíàëîã""," & Chr(10) & """ÎÊ"")))," & Chr(10) & " IF(R[3]C[5]="""",""ÎÊ""," & Chr(10) & "   IF(R[3]C[6]=""""," & Chr(10) & "     IF(AVERAGE(R[3]C[3]:R[3]C[5])<-0.2,""Àíàëîã!""," & Chr(10) & """ÎÊ"")," & Chr(10) & " IF(AND(AVERAGE(R[3]C[5]:R[3]C[6])<-0.2,AVERAGE(R[5]C[5]:R[5]C[6])<0.8,AVERAGE(R[4]C[5]:R[4]C[6])>0.8" & _
+                "),""Àíàëîã!""," & Chr(10) & "    IF(AND(AVERAGE(R[3]C[5]:R[3]C[6])<-0.2,AVERAGE(R[5]C[5]:R[5]C[6])>0.8),""Àíàëîã!""," & Chr(10) & "       IF(AVERAGE(R[3]C[5]:R[3]C[6])>0.2,""Àíàëîã""," & Chr(10) & """ÎÊ"")))))))))),""ÎÊ"")" & _
+                ""
+            i = i + 5
+            Next i
+            
+    For k = 6 To 10
+        For ii = k To max_range
+            For i = ii To max_range
+            Main_list.Cells(i, 11).FormulaR1C1 = "=R[-1]C"
+            i = i + 5
+            Next i
+        ii = ii + 5
+        Next ii
+    Next k
+
+End Sub
+
+Sub cause()
+    max_range = Data.Cells(Rows.Count, 1).End(xlUp).Row + 3
+    Data.Cells.HorizontalAlignment = xlCenter
+
+    For i = 5 To max_range
+    Main_list.Cells(i, 29).FormulaR1C1 = "=IFERROR(INDEX(RC[-15]:RC[-2],1,RC[-20]),0)"
+    Next i
+    
+    For i = 5 To max_range
+    Main_list.Cells(i, 31).FormulaR1C1 = "=IF(RC[-20]=""ÑÀ"",AVERAGE(R[3]C[-15]:R[3]C[-14]),"""")"
+    Next i
+
+    For i = 5 To max_range
+    Main_list.Cells(i, 32).FormulaR1C1 = "=IFERROR(IF(RC[-21]=""ÑÀ"",AVERAGE(R[3]C[-12]:R[3]C[-11]),""""),"""")"
+    Next i
+
+    For i = 5 To max_range
+    Main_list.Cells(i, 33).FormulaR1C1 = "=IF(RC[-20]=""Ïîòåíöèàë, ò.ðóá."",IF(AND(OR(RC[-2]>0,RC[-1]>0),OR(RC[-2]<>"""",RC[-1]<>"""")),""Ïðîäàæè âûøå àíàëîãà"",IF(OR(RC[-2]<0,RC[-1]<0),""Ïðîäàæè íèæå àíàëîãà"","""")),"""")"
+    Next i
+    
+    For i = 5 To max_range
+    Main_list.Cells(i, 34).FormulaR1C1 = "=IF(RC[-21]=""Ïîòåíöèàë, ò.ðóá."",IF(AND(RC[-23]=""ÑÀ"",RC[-1]=""""),IF(AND(OR(RC[-3]>0,RC[-2]>0),OR(RC[-3]<>"""",RC[-2]<>"""")),""Ïðîäàæè âûøå àíàëîãà"",IF(OR(RC[-3]<0,RC[-2]<0),""Ïðîäàæè íèæå àíàëîãà"","""")),""""),"""")"
+    Next i
+    
+    For i = 5 To max_range
+    Main_list.Cells(i, 35).FormulaR1C1 = "=CONCATENATE(RC[-2],RC[-1])"
+    Next i
+    
+    For i = 5 To max_range
+    Main_list.Cells(i, 37).FormulaR1C1 = "=IF(AND(RC[-24]=""Ïîòåíöèàë, ò.ðóá."",LEFT(RC[-26],6)=""Àíàëîã""),AVERAGE(R[1]C[-21]:R[1]C[-10]),"""")"
+    Next i
+    
+    For i = 5 To max_range
+    Main_list.Cells(i, 38).FormulaR1C1 = "=IF(AND(RC[-25]=""Ïîòåíöèàë, ò.ðóá."",LEFT(RC[-27],6)=""Àíàëîã""),RC[-27],"""")"
+    Next i
+    
+End Sub
+
+
+--------------------------------------------------------------------
+Sub getdata_mk()   '(ribbon As IRibbonControl)
+
+Dim msq As ADODB.Connection
+
+Dim sql As String
+Dim sqldt As New Command
+Dim sqlTD As New Command
+Dim rs As ADODB.Recordset
+Dim mas() As Variant
+
+'Application.ScreenUpdating = False
+Data_MK.Cells.Clear
+Data_MK.Activate
+
+Set msq = DSLConnection(): msq.CommandTimeout = 0: msq.Open
+
+Set sqldt = New ADODB.Command: Set sqldt.ActiveConnection = msq
+
+
+'Ñîáèðàåì äàííûå
+sql = "SELECT * " _
+     & " FROM REPORTS.dbo.V_MK_RDM4947 ORDER BY NAME_TS,AN_PORYADOK, PR; "
+Set rs = Connect.RunQuery(sql)
+
+'Âûãðóçêà íàçâàíèé ñòîëáöîâ íà ëèñò èñòî÷íèê ñ äàííûìè
+For j = 0 To rs.Fields.Count - 1
+    Data_MK.Cells(1, j + 1).Value = rs.Fields(j).Name
+Next j
+
+'êîïèðóåì äàííûå èç çàïðîñà â Excel
+
+Data_MK.Range("A2").CopyFromRecordset rs
+'Äàòà îòêðûòèÿ
+Data_MK.Range("AA1") = "Äàòà îòêðûòèÿ"
+
+    max_range = Data_MK.Cells(Rows.Count, 1).End(xlUp).Row
+    Data_MK.Cells.HorizontalAlignment = xlCenter
+    
+For i = 2 To max_range
+    Data_MK.Cells(i, 27).FormulaR1C1 = "=RC[-17]+0"
+Next i
+
+'Ïîëó÷àåì êîëè÷åñòâî ñòðîê â äàííûõ
+max_head = Data_MK.Cells(Rows.Count, 1).End(xlUp).Row
+
+End Sub
+
+Sub templateCopy_MK()
+    Main_list_MK.Activate
+    ClearList_MK
+    Template.Range(Template.Cells(13, 2), Template.Cells(15, 32)).Copy Main_list_MK.Cells(2, 2)
+End Sub
+
+Sub ClearList_MK()
+    Main_list_MK.Activate
+    ActiveSheet.Cells.Clear
+End Sub
+'Íå èñïîëüçóåòñÿ
+Sub InsertData_MK()
+Dim max_head As Integer
+    'âûáèðàåì ëèñò Main
+    Main_list_MK.Activate
+    'Ìàêñ ñòðîêà â template
+    max_head = Template.Cells(Rows.Count, 10).End(xlUp).Row
+    'Ìàêñ ñòðîêà â Data
+    max_range = Data_MK.Cells(Rows.Count, 1).End(xlUp).Row + 3
+    Data_MK.Cells.HorizontalAlignment = xlCenter
+    
+    For i = 5 To max_range
+    
+        Main_list_MK.Cells(i, 2) = Data_MK.Cells(i - 3, 8).Value
+        Main_list_MK.Cells(i, 3) = Data_MK.Cells(i - 3, 9).Value
+        Main_list_MK.Cells(i, 4) = Data_MK.Cells(i - 3, 10).Value
+        Main_list_MK.Cells(i, 5) = Data_MK.Cells(i - 3, 1).Value
+        Main_list_MK.Cells(i, 6) = Data_MK.Cells(i - 3, 5).Value
+        Main_list_MK.Cells(i, 7) = Data_MK.Cells(i - 3, 3).Value
+        Main_list_MK.Cells(i, 8) = Data_MK.Cells(i - 3, 4).Value
+        Main_list_MK.Cells(i, 9) = Data_MK.Cells(i - 3, 2).Value
+        Main_list_MK.Cells(i, 10) = Data_MK.Cells(i - 3, 6).Value
+        Main_list_MK.Cells(i, 12) = Data_MK.Cells(i - 3, 7).Value
+        
+        
+        'Main_list.Cells(2, i).Select
+        'Data.Activate
+        'Data.Cells(i, 8).Select
+        'êîïèðóåì â painting èç Data, ïî ïðàâèëàì îïèñàííûì â Template. 'Íàèìåíîâàíèå ñòîëáåö, èç êàêîãî ñòîëáöà'
+        'Data.Range(Data.Cells(2, Template.Cells(i, 11).Value), Data.Cells(max_range, Template.Cells(i, 11).Value)).Copy Main_list.Cells(3, i)
+        'Âûáèðàåì îäèí ýëåìåíò øàïêè
+        'Main_list.Cells(i, 2).Select
+    Next i
+    
+End Sub
+
+Sub InsertData_MK_v2()
+Dim max_head As Integer
+    'âûáèðàåì ëèñò Main
+    Main_list_MK.Activate
+    'Ìàêñ ñòðîêà â template
+    max_head = Template.Cells(Rows.Count, 10).End(xlUp).Row
+    'Ìàêñ ñòðîêà â Data
+    max_range = Data_MK.Cells(Rows.Count, 1).End(xlUp).Row + 3
+    Data_MK.Cells.HorizontalAlignment = xlCenter
+    
+        For i = 5 To max_range
+            Main_list_MK.Cells(i, 2).FormulaR1C1 = "='Äàííûå ÌÊ'!R[-3]C[6]"
+            Main_list_MK.Cells(i, 3).FormulaR1C1 = "='Äàííûå ÌÊ'!R[-3]C[6]"
+            Main_list_MK.Cells(i, 4).FormulaR1C1 = "='Äàííûå ÌÊ'!R[-3]C[23]"
+            Main_list_MK.Cells(i, 5).FormulaR1C1 = "='Äàííûå ÌÊ'!R[-3]C[-4]"
+            Main_list_MK.Cells(i, 6).FormulaR1C1 = "='Äàííûå ÌÊ'!R[-3]C[-1]"
+            Main_list_MK.Cells(i, 7).FormulaR1C1 = "='Äàííûå ÌÊ'!R[-3]C[-4]"
+            Main_list_MK.Cells(i, 8).FormulaR1C1 = "='Äàííûå ÌÊ'!R[-3]C[-4]"
+            Main_list_MK.Cells(i, 9).FormulaR1C1 = "='Äàííûå ÌÊ'!R[-3]C[-7]"
+            Main_list_MK.Cells(i, 10).FormulaR1C1 = "='Äàííûå ÌÊ'!R[-3]C[-4]"
+            Main_list_MK.Cells(i, 12).FormulaR1C1 = "='Äàííûå ÌÊ'!R[-3]C[-5]"
+        Next i
+    
+End Sub
+
+Sub InsertFormul_MK()
+Dim max_head As Integer
+    'âûáèðàåì ëèñò Main
+    Main_list_MK.Activate
+    'Ìàêñ ñòðîêà â Data
+    max_range = Data_MK.Cells(Rows.Count, 1).End(xlUp).Row + 3
+    Data_MK.Cells.HorizontalAlignment = xlCenter
+    
+    For ii = 13 To 26
+        For i = 5 To max_range
+            Main_list_MK.Cells(i, ii).FormulaR1C1 = _
+            "=IFERROR(IF('Äàííûå ÌÊ'!R[-3]C[-1]/30/1000=0,"""",'Äàííûå ÌÊ'!R[-3]C[-1]/30/1000),"""")"
+        i = i + 5
+        Next i
+    
+    Next ii
+    
+    For ii = 13 To 26
+        For i = 6 To max_range
+            Main_list_MK.Cells(i, ii).FormulaR1C1 = _
+            "=IFERROR(IF(OR(RC6=RC10,RC6=""åñòü""),IFERROR(IF('Äàííûå ÌÊ'!R[-3]C[-1]/1000=0,"""",'Äàííûå ÌÊ'!R[-3]C[-1]/1000),""""),IF(RC6=""íåò"",(IFERROR(IF('Äàííûå ÌÊ'!R[-3]C[-1]/1000=0,"""",'Äàííûå ÌÊ'!R[-3]C[-1]/1000),"""")/0.93))),"""")"
+        i = i + 5
+        Next i
+    Next ii
+    
+    For ii = 13 To 26
+        For i = 7 To max_range
+            Main_list_MK.Cells(i, ii).FormulaR1C1 = _
+            "=IFERROR(IF(RC5=RIGHT(RC8,LEN(RC5)),R[-2]C,IF(OR(RC6=RC10,RC10=""åñòü""),IFERROR(IF('Äàííûå ÌÊ'!R[-3]C[-1]/1000=0,"""",'Äàííûå ÌÊ'!R[-3]C[-1]/1000),""""),IF(RC10=""íåò"",(IFERROR(IF('Äàííûå ÌÊ'!R[-3]C[-1]/1000=0,"""",'Äàííûå ÌÊ'!R[-3]C[-1]/1000),"""")/0.93)))),"""")"
+        i = i + 5
+        Next i
+    Next ii
+    
+    For ii = 13 To 26
+        For i = 8 To max_range
+            Main_list_MK.Cells(i, ii).FormulaR1C1 = _
+            "=IFERROR(R[-2]C/R[-1]C-1,"""")"
+        i = i + 5
+        Next i
+    Next ii
+    
+    For ii = 13 To 26
+        For i = 9 To max_range
+            Main_list_MK.Cells(i, ii).FormulaR1C1 = _
+            "=IFERROR(IF('Äàííûå ÌÊ'!R[-3]C[-1]="""","""",'Äàííûå ÌÊ'!R[-3]C[-1]),"""")"
+        i = i + 5
+        Next i
+    Next ii
+    
+    For ii = 13 To 26
+        For i = 10 To max_range
+            Main_list_MK.Cells(i, ii).FormulaR1C1 = _
+            "=IFERROR(IF('Äàííûå ÌÊ'!R[-3]C[-1]="""","""",'Äàííûå ÌÊ'!R[-3]C[-1]),"""")"
+        i = i + 5
+        
+        Next i
+    Next ii
+  
+  
+            For i = 5 To max_range
+            Main_list_MK.Cells(i, 11).FormulaR1C1 = _
+                "=IFERROR(" & Chr(10) & "IF(RC[-8]=0,""ÑÀ""," & Chr(10) & "   IF(RC[-8]=1," & Chr(10) & "      IF(R[3]C[12]<>"""",""ÌÂ""," & Chr(10) & "         IF(R[3]C[9]<>""""," & Chr(10) & "                             IF(AVERAGE(R[3]C[8]:R[3]C[9])>0.3,""Àíàëîã""," & Chr(10) & """ÎÊ"")," & Chr(10) & " IF(R[3]C[5]="""",""ÎÊ""," & Chr(10) & "       IF(AVERAGE(R[3]C[4]:R[3]C[5])>0.3,""Àíàëîã""," & Chr(10) & """ÎÊ"")))))),""ÎÊ"")"
+            i = i + 5
+            Next i
+            
+    For k = 6 To 10
+        For ii = k To max_range
+            For i = ii To max_range
+            Main_list_MK.Cells(i, 11).FormulaR1C1 = "=R[-1]C"
+            i = i + 5
+            Next i
+        ii = ii + 5
+        Next ii
+    Next k
+
+End Sub
+
+Sub cause_MK()
+    max_range = Data_MK.Cells(Rows.Count, 1).End(xlUp).Row + 3
+    Data_MK.Cells.HorizontalAlignment = xlCenter
+
+    For i = 5 To max_range
+    Main_list_MK.Cells(i, 28).FormulaR1C1 = "=IFERROR(INDEX(RC[-15]:RC[-2],1,RC[-19]),0)"
+    Next i
+    
+    For i = 5 To max_range
+    Main_list_MK.Cells(i, 30).FormulaR1C1 = "=IF(RC[-19]=""ÑÀ"",AVERAGE(R[3]C[-15]:R[3]C[-14]),"""")"
+    Next i
+
+    For i = 5 To max_range
+    Main_list_MK.Cells(i, 31).FormulaR1C1 = "=IFERROR(IF(RC[-20]=""ÑÀ"",AVERAGE(R[3]C[-12]:R[3]C[-11]),""""),"""")"
+    Next i
+
+    For i = 5 To max_range
+    Main_list_MK.Cells(i, 32).FormulaR1C1 = "=IF(RC[-20]=""Ïîòåíöèàë, ò.ðóá."",IF(RC[-21]=""ÑÀ"",""Ïðîäàæè âûøå àíàëîãà"",""""),"""")"
+    Next i
+    
+    For i = 5 To max_range
+    Main_list_MK.Cells(i, 34).FormulaR1C1 = "=IF(AND(RC[-22]=""Ïîòåíöèàë, ò.ðóá."",LEFT(RC[-23],6)=""Àíàëîã""),AVERAGE(R[1]C[-19]:R[1]C[-8]),"""")"
+    Next i
+
+    For i = 5 To max_range
+    Main_list_MK.Cells(i, 35).FormulaR1C1 = "=IF(AND(RC[-23]=""Ïîòåíöèàë, ò.ðóá."",LEFT(RC[-24],6)=""Àíàëîã""),RC[-24],"""")"
+    Next i
+
+End Sub
+
+
+
+
+
+
+
+---------------------------------------------
+
+Option Explicit
+Dim myRibbon As IRibbonUI
+Dim pressed_state(30) As Boolean
+'çàãðóçêà ëåíòû ïðè îòêðûòèè êíèãè èç xml
+Public Sub RibbonLoading(ribbon As IRibbonUI)
+wb.Current_Ribbon = ribbon
+Set myRibbon = ribbon
+
+End Sub
+
+Public Sub Main(ribbon As IRibbonControl)
+App.StopApp
+Insert_data.getdata
+Insert_data.templateCopy
+Insert_data.InsertData_v2
+Insert_data.InsertFormul
+Insert_data.cause
+'Format.header1
+'Format.header2
+Format.CopyFormat
+'Format.clear_cells
+
+Insert_data_mk.getdata_mk
+Insert_data_mk.templateCopy_MK
+Insert_data_mk.InsertData_MK_v2
+Insert_data_mk.InsertFormul_MK
+Insert_data_mk.cause_MK
+'Format_mk.header1_mk
+'Format_mk.header2_mk
+Format_mk.CopyFormat_MK
+'Format_mk.clear_cells_mk
+
+wb.RefreshAll
+
+MsgBox "Îò÷¸ò îáíîâëåí"
+App.StartApp
+End Sub
+
+Public Sub Refresh(ribbon As IRibbonControl)
+wb.RefreshAll
+MsgBox "Ëèñò Èñõ.äàííûå îáíîâëåí"
+End Sub
+
+
+
+
+
+
+
+
+
